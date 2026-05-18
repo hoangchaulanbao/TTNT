@@ -1,0 +1,99 @@
+# Configuration - Vietnamese Legal QA System
+
+# Data paths
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  alqac_dir: "data/alqac"
+  qa_dataset_dir: "data/qa_dataset"
+  chroma_db_dir: "data/chroma_db"
+  feedback_dir: "data/feedback"
+
+# Model paths
+models:
+  adapters_dir: "models/adapters"
+  merged_dir: "models/merged"
+
+# LLM Models
+llm:
+  models:
+    vistral:
+      name: "Viet-Mistral/Vistral-7B-Chat"
+      max_tokens: 1024
+      temperature: 0.1
+    phogpt:
+      name: "vinai/PhoGPT-7B5-Instruct"
+      max_tokens: 1024
+      temperature: 0.1
+    qwen:
+      name: "Qwen/Qwen2.5-7B-Instruct"
+      max_tokens: 1024
+      temperature: 0.1
+
+# Embedding Models
+embedding:
+  models:
+    phobert:
+      name: "vinai/phobert-base-v2"
+      dimension: 768
+    multilingual_e5:
+      name: "intfloat/multilingual-e5-large"
+      dimension: 1024
+
+# Reranker
+reranker:
+  model_name: "BAAI/bge-reranker-v2-m3"
+  top_k: 5
+
+# RAG Pipeline
+rag:
+  retrieval:
+    initial_top_k: 20
+    final_top_k: 5
+    min_similarity: 0.3
+  chunking:
+    min_tokens: 100
+    max_tokens: 1000
+    target_tokens: 500
+    overlap_tokens: 50
+
+# Conversation
+conversation:
+  max_history_turns: 10
+  context_turns_for_prompt: 3
+  topic_change_threshold: 0.2
+  reference_lookback_turns: 3
+
+# Quality Guard
+quality_guard:
+  legal_confidence_threshold: 0.5
+  ambiguity_min_words: 5
+  validity_warning_years: 3
+
+# Fine-tuning (QLoRA)
+fine_tuning:
+  qlora:
+    bits: 4
+    lora_rank: 64
+    lora_alpha: 16
+    lora_dropout: 0.1
+    target_modules: ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+  training:
+    epochs: 3
+    batch_size: 4
+    gradient_accumulation_steps: 4
+    learning_rate: 0.0002
+    warmup_ratio: 0.03
+    max_seq_length: 2048
+    seed: 42
+
+# Evaluation
+evaluation:
+  reports_dir: "evaluation/reports"
+
+# Crawling
+crawling:
+  rate_limit_seconds: 1.5
+  max_retries: 3
+  timeout_seconds: 30
+  max_docs_per_category: 300
